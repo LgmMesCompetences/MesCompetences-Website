@@ -20,12 +20,12 @@ class Posseder
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="posseders")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posseders")
      */
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Competences::class, inversedBy="posseders")
+     * @ORM\ManyToOne(targetEntity=Competences::class, inversedBy="posseders")
      */
     private $competence;
 
