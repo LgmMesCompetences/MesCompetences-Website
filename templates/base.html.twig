@@ -1,19 +1,129 @@
 <!DOCTYPE html>
-<html>
-    <head>
+<html lang="{{ app.request.getLocale() }}">
+{% block head %}
+<head>
+    {% block meta %}
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{% block description %}Mes Comptetences{% endblock %}"/>
+    {% endblock meta %}
 
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
+    <title>{% block title %}Mes Comptetences{% endblock title %}</title>
+
+    {% block stylesheets %}
+        <link rel="preload" href="{{ asset('css/materialize.min.css') }}" as="style">
+        <link rel="stylesheet" href="{{ asset('css/materialize.min.css') }}">
+
+        <link rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons" as="style">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <link rel="preload" href="{{ asset('css/style.css') }}" as="style">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    {% endblock stylesheets %}
+</head>
+{% endblock head %}
+
+{% block body %}
+<body>
+    {% block header %}
+    <header>
+        {% block navbar %}
+        <div class="navbar-fixed">
+            <nav {% if nav_extended is defined %}class="nav-extended"{% endif %}>
+                <div class="nav-wrapper">
+                    <a href="{{ path('app_home') }}" class="brand-logo">Logo</a>
+                    <a href="#" data-target="sidenav" class="right sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
+                </div>
+                {% if nav_extended is defined %}
+                <div class="nav-content">
+                    {% block navbar_content %}
+                    {% endblock navbar_content %}
+                </div>
+                {% endif %}
+            </nav>
+        </div>
+        {% endblock navbar %}
+
+        {% block sidenav %}
+        <div>
+            <ul id="sidenav" class="sidenav">
+                <li><a class="waves-effect" href="{{ path('app_home') }}">Home</a></li>
+                <li><div class="divider"></div></li>
+                <li><a class="waves-effect" href="#!">Example #2</a></li>
+            </ul>
+        </div>
+        {% endblock sidenav %}
+    </header>
+    {% endblock header %}
+
+    {% block main %}
+    <main {% block main_attributes %}{% endblock main_attributes %}>
+        {% block content %}
         {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    </main>
+    {% endblock main %}
+
+    {% block aside %}
+    <aside>
+    </aside>
+    {% endblock aside %}
+
+    {% block footer %}
+    <footer class="page-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Footer Content</h5>
+                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Links</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container">
+                © 2021 Tous droits réservés MesCompetences.dev
+                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+        </div>
+    </footer>
+    {% endblock footer %}
+
+    {% block flashes %}
+        {% if app.flashes()|length > 0 %}
+            <script>
+                <!-- Toasts -->
+                {% for type, messages in app.flashes() %}
+                    {% for message in messages %}
+                        M.toast({text: "{{ type|upper }}: {{ message }}"});
+                    {% endfor %}
+                {% endfor %}
+            </script>
+        {% endif %}
+    {% endblock flashes %}
+
+    {% block javascripts %}
+    <script src="{{ asset('js/materialize.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    
+    <script>
+    $(document).ready(function(){
+        var elems = document.querySelectorAll('.sidenav');
+        M.Sidenav.init(elems, {
+            "edge": "right",
+        });
+        {% if nav_extended is defined %}
+        document.querySelector(".navbar-fixed").style.height = document.querySelector(".nav-extended").style.height;
+        {% endif %}
+    });
+    </script>
+
+    {% endblock javascripts %}
+</body>
+{% endblock body %}
 </html>

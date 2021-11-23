@@ -1,0 +1,79 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+nav .brand-logo {
+    margin-left: 2.5rem;
+    text-shadow: 5px 5px 4px black;
+    font-family: Gugi;
+}
+
+@media only screen and (max-width: 992.99px) {
+    nav .brand-logo {
+        margin-left: 0rem;
+    }
+}
+
+ul.sidenav li:hover {
+    background-color: #ee6e73;
+}
+
+ul.sidenav li:hover a {
+    color: white;
+}
+
+ul.sidenav li:hover a i.material-icons {
+    color: white;
+}
+
+ul.sidenav li.active {
+    background-color: #ee6e73;
+}
+
+ul.sidenav li.active a {
+    color: white;
+}
+
+ul.sidenav li.active a i.material-icons {
+    color: white;
+}
+
+.box {
+    margin: 2rem;
+}
+
+.rounded {
+    border-radius: 0.75rem;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+ul.sidenav li.no-hover:hover {
+    background-color: white;
+}
+
+ul.sidenav li.no-hover:hover a {
+    color: black;
+}
+
+ul.sidenav li.no-hover:hover a i.material-icons {
+    color: black;
+}
+
+.va-bottom {
+    vertical-align: bottom;
+}
+
+.va-middle {
+    vertical-align: middle;
+}
