@@ -29,10 +29,6 @@ class Competences
 
     private $libelle;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="competences")
-     */
-    private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Competences::class, inversedBy="competences")
@@ -44,9 +40,15 @@ class Competences
      */
     private $competences;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Posseder::class, mappedBy="competence")
+     */
+    private $posseders;
+
     public function __construct()
     {
         $this->competences = new ArrayCollection();
+        $this->posseders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,17 +68,6 @@ class Competences
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 
     public function getParent(): ?self
     {
@@ -115,6 +106,33 @@ class Competences
             if ($competence->getParent() === $this) {
                 $competence->setParent(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Posseder[]
+     */
+    public function getPosseders(): Collection
+    {
+        return $this->posseders;
+    }
+
+    public function addPosseder(Posseder $posseder): self
+    {
+        if (!$this->posseders->contains($posseder)) {
+            $this->posseders[] = $posseder;
+            $posseder->addCompetence($this);
+        }
+
+        return $this;
+    }
+
+    public function removePosseder(Posseder $posseder): self
+    {
+        if ($this->posseders->removeElement($posseder)) {
+            $posseder->removeCompetence($this);
         }
 
         return $this;

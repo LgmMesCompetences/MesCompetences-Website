@@ -52,9 +52,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $competences;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Posseder::class, mappedBy="user")
+     */
+    private $posseders;
+
     public function __construct()
     {
         $this->competences = new ArrayCollection();
+        $this->posseders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -183,6 +189,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($competence->getUser() === $this) {
                 $competence->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Posseder[]
+     */
+    public function getPosseders(): Collection
+    {
+        return $this->posseders;
+    }
+
+    public function addPosseder(Posseder $posseder): self
+    {
+        if (!$this->posseders->contains($posseder)) {
+            $this->posseders[] = $posseder;
+            $posseder->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePosseder(Posseder $posseder): self
+    {
+        if ($this->posseders->removeElement($posseder)) {
+            $posseder->removeUser($this);
         }
 
         return $this;
