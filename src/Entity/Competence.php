@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\CompetencesRepository;
+use App\Repository\CompetenceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,10 +10,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=CompetencesRepository::class)
+ * @ORM\Entity(repositoryClass=CompetenceRepository::class)
  */
 #[ApiResource()]
-class Competences
+class Competence
 {
     /**
      * @ORM\Id
@@ -31,23 +31,33 @@ class Competences
 
 
     /**
-     * @ORM\ManyToOne(targetEntity=Competences::class, inversedBy="competences")
+     * @ORM\ManyToOne(targetEntity=Competence::class, inversedBy="Competence")
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Competences::class, mappedBy="parent")
+     * @ORM\OneToMany(targetEntity=Competence::class, mappedBy="parent")
      */
-    private $competences;
+    private $Competence;
 
     /**
      * @ORM\ManyToMany(targetEntity=Posseder::class, mappedBy="competence")
      */
     private $posseders;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $level;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Competence::class)
+     */
+    private $mainComp;
+
     public function __construct()
     {
-        $this->competences = new ArrayCollection();
+        $this->Competence = new ArrayCollection();
         $this->posseders = new ArrayCollection();
     }
 
@@ -84,15 +94,15 @@ class Competences
     /**
      * @return Collection|self[]
      */
-    public function getCompetences(): Collection
+    public function getCompetence(): Collection
     {
-        return $this->competences;
+        return $this->Competence;
     }
 
     public function addCompetence(self $competence): self
     {
-        if (!$this->competences->contains($competence)) {
-            $this->competences[] = $competence;
+        if (!$this->Competence->contains($competence)) {
+            $this->Competence[] = $competence;
             $competence->setParent($this);
         }
 
@@ -101,7 +111,7 @@ class Competences
 
     public function removeCompetence(self $competence): self
     {
-        if ($this->competences->removeElement($competence)) {
+        if ($this->Competence->removeElement($competence)) {
             // set the owning side to null (unless already changed)
             if ($competence->getParent() === $this) {
                 $competence->setParent(null);
@@ -128,12 +138,36 @@ class Competences
 
         return $this;
     }
-
+    
     public function removePosseder(Posseder $posseder): self
     {
         if ($this->posseders->removeElement($posseder)) {
             $posseder->removeCompetence($this);
         }
+
+        return $this;
+    }
+
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(int $level): self
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    public function getMainComp(): ?Competence
+    {
+        return $this->mainComp;
+    }
+
+    public function setMainComp(?Competence $mainComp): self
+    {
+        $this->mainComp = $mainComp;
 
         return $this;
     }

@@ -25,7 +25,7 @@ class Posseder
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Competences::class, inversedBy="posseders")
+     * @ORM\ManyToOne(targetEntity=Competence::class, inversedBy="posseders")
      */
     private $competence;
 
@@ -70,14 +70,14 @@ class Posseder
     }
 
     /**
-     * @return Collection|Competences[]
+     * @return Collection|Competence[]
      */
     public function getCompetence(): Collection
     {
         return $this->competence;
     }
 
-    public function addCompetence(Competences $competence): self
+    public function addCompetence(Competence $competence): self
     {
         if (!$this->competence->contains($competence)) {
             $this->competence[] = $competence;
@@ -86,7 +86,7 @@ class Posseder
         return $this;
     }
 
-    public function removeCompetence(Competences $competence): self
+    public function removeCompetence(Competence $competence): self
     {
         $this->competence->removeElement($competence);
 

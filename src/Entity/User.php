@@ -48,9 +48,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $dateIncription;
 
     /**
-     * @ORM\OneToMany(targetEntity=Competences::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Competence::class, mappedBy="user")
      */
-    private $competences;
+    private $Competence;
 
     /**
      * @ORM\ManyToMany(targetEntity=Posseder::class, mappedBy="user")
@@ -59,7 +59,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->competences = new ArrayCollection();
+        $this->Competence = new ArrayCollection();
         $this->posseders = new ArrayCollection();
     }
 
@@ -165,26 +165,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection|Competences[]
+     * @return Collection|Competence[]
      */
-    public function getCompetences(): Collection
+    public function getCompetence(): Collection
     {
-        return $this->competences;
+        return $this->Competence;
     }
 
-    public function addCompetence(Competences $competence): self
+    public function addCompetence(Competence $competence): self
     {
-        if (!$this->competences->contains($competence)) {
-            $this->competences[] = $competence;
+        if (!$this->Competence->contains($competence)) {
+            $this->Competence[] = $competence;
             $competence->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeCompetence(Competences $competence): self
+    public function removeCompetence(Competence $competence): self
     {
-        if ($this->competences->removeElement($competence)) {
+        if ($this->Competence->removeElement($competence)) {
             // set the owning side to null (unless already changed)
             if ($competence->getUser() === $this) {
                 $competence->setUser(null);
