@@ -49,7 +49,7 @@ class SecurityController extends AbstractController
             if($form->isSubmitted()&&$form->isValid()){
 
                 $user->setPassword($passwordHasher->hashPassword($user,$form->get('password')->getData()));
-                $user->setDateIncription(new \DateTime());
+                $user->setDateInscription(new \DateTime());
 
                 $em = $this->getDoctrine()->getManager();
 

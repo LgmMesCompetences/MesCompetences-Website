@@ -15,7 +15,7 @@
 					<table>
 						<thead>
 							<tr>
-								<th>ID</th><th>Email</th><th>Date d'inscription</th>
+								<th>ID</th><th>Email</th><th>Date d'inscription</th><th>Rôle</th><th>Interaction</th>
 							</tr>
 						</thead>
 
@@ -25,6 +25,12 @@
 									<td>{{u.id}}</td>
 									<td>{{u.email}}</td>
 									<td>{{u.dateInscription | date('d/m/Y')}}</td>
+									<td>
+										{% for role in u.roles %}
+											{{ role|slice(5)|lower }}{% if not loop.last %},{% endif %}
+										{% endfor %}
+									</td>
+									<td><a href="{{path('app_admin_user_modif', {'id':u.id})}}">Modifier</a><td>
 							{% endfor %}
 						</tbody>
 					</table>
