@@ -53,9 +53,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $Competence;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Posseder::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Posseder::class, mappedBy="user")
      */
     private $posseders;
+
 
     public function __construct()
     {
@@ -206,7 +207,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->posseders->contains($posseder)) {
             $this->posseders[] = $posseder;
-            $posseder->addUser($this);
+            $posseder->setUser($this);
         }
 
         return $this;
@@ -215,7 +216,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removePosseder(Posseder $posseder): self
     {
         if ($this->posseders->removeElement($posseder)) {
-            $posseder->removeUser($this);
+            // set the owning side to null (unless already changed)
+            if ($posseder->getUser() === $this) {
+                $posseder->setUser(null);
+            }
         }
 
         return $this;

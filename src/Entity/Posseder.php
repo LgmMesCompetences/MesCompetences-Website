@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\PossederRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,87 +18,59 @@ class Posseder
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posseders")
+     * @ORM\Column(type="integer")
      */
-    private $user;
+    private $nbrRecommander;
 
     /**
      * @ORM\ManyToOne(targetEntity=Competence::class, inversedBy="posseders")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $competence;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posseders")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $nbRecommandation = 0;
-
-    public function __construct()
-    {
-        $this->user = new ArrayCollection();
-        $this->competence = new ArrayCollection();
-    }
+    private $user;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUser(): Collection
+    public function getNbrRecommander(): ?int
     {
-        return $this->user;
+        return $this->nbrRecommander;
     }
 
-    public function addUser(User $user): self
+    public function setNbrRecommander(int $nbrRecommander): self
     {
-        if (!$this->user->contains($user)) {
-            $this->user[] = $user;
-        }
+        $this->nbrRecommander = $nbrRecommander;
 
         return $this;
     }
 
-    public function removeUser(User $user): self
-    {
-        $this->user->removeElement($user);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Competence[]
-     */
-    public function getCompetence(): Collection
+    public function getCompetence(): ?Competence
     {
         return $this->competence;
     }
 
-    public function addCompetence(Competence $competence): self
+    public function setCompetence(?Competence $competence): self
     {
-        if (!$this->competence->contains($competence)) {
-            $this->competence[] = $competence;
-        }
+        $this->competence = $competence;
 
         return $this;
     }
 
-    public function removeCompetence(Competence $competence): self
+    public function getUser(): ?User
     {
-        $this->competence->removeElement($competence);
-
-        return $this;
+        return $this->user;
     }
 
-    public function getNbRecommandation(): ?int
+    public function setUser(?User $user): self
     {
-        return $this->nbRecommandation;
-    }
-
-    public function setNbRecommandation(int $nbRecommandation): self
-    {
-        $this->nbRecommandation = $nbRecommandation;
+        $this->user = $user;
 
         return $this;
     }

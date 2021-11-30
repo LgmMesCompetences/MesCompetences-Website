@@ -40,10 +40,6 @@ class Competence
      */
     private $Competence;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Posseder::class, mappedBy="competence")
-     */
-    private $posseders;
 
     /**
      * @ORM\Column(type="integer")
@@ -54,6 +50,11 @@ class Competence
      * @ORM\ManyToOne(targetEntity=Competence::class)
      */
     private $mainComp;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Posseder::class, mappedBy="competence")
+     */
+    private $posseders;
 
     public function __construct()
     {
@@ -121,33 +122,6 @@ class Competence
         return $this;
     }
 
-    /**
-     * @return Collection|Posseder[]
-     */
-    public function getPosseders(): Collection
-    {
-        return $this->posseders;
-    }
-
-    public function addPosseder(Posseder $posseder): self
-    {
-        if (!$this->posseders->contains($posseder)) {
-            $this->posseders[] = $posseder;
-            $posseder->addCompetence($this);
-        }
-
-        return $this;
-    }
-    
-    public function removePosseder(Posseder $posseder): self
-    {
-        if ($this->posseders->removeElement($posseder)) {
-            $posseder->removeCompetence($this);
-        }
-
-        return $this;
-    }
-
     public function getLevel(): ?int
     {
         return $this->level;
@@ -168,6 +142,36 @@ class Competence
     public function setMainComp(?Competence $mainComp): self
     {
         $this->mainComp = $mainComp;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Posseder[]
+     */
+    public function getPosseders(): Collection
+    {
+        return $this->posseders;
+    }
+
+    public function addPosseder(Posseder $posseder): self
+    {
+        if (!$this->posseders->contains($posseder)) {
+            $this->posseders[] = $posseder;
+            $posseder->setCompetence($this);
+        }
+
+        return $this;
+    }
+
+    public function removePosseder(Posseder $posseder): self
+    {
+        if ($this->posseders->removeElement($posseder)) {
+            // set the owning side to null (unless already changed)
+            if ($posseder->getCompetence() === $this) {
+                $posseder->setCompetence(null);
+            }
+        }
 
         return $this;
     }
