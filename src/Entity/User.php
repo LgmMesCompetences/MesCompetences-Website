@@ -45,12 +45,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateIncription;
+    private $dateInscription;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Competence::class, mappedBy="user")
-     */
-    private $Competence;
 
     /**
      * @ORM\OneToMany(targetEntity=Posseder::class, mappedBy="user")
@@ -153,14 +149,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getDateIncription(): ?\DateTimeInterface
+    public function getDateInscription(): ?\DateTimeInterface
     {
-        return $this->dateIncription;
+        return $this->dateInscription;
     }
 
-    public function setDateIncription(\DateTimeInterface $dateIncription): self
+    public function setDateInscription(\DateTimeInterface $dateInscription): self
     {
-        $this->dateIncription = $dateIncription;
+        $this->dateInscription = $dateInscription;
 
         return $this;
     }
