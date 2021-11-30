@@ -48,7 +48,15 @@
         {% block sidenav %}
         <div>
             <ul id="sidenav" class="sidenav">
-                <li><a class="waves-effect" href="{{ path('app_home') }}">Home</a></li>
+                {% if not app.user %}
+                    <li {% if app.request.get('_route') == 'app_login' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_login') }}">Login</a></li>
+                    <li {% if app.request.get('_route') == 'app_register' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_register') }}">Register</a></li>
+                {% else %}
+                    <li {% if app.request.get('_route') == 'app_home' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_home') }}">Home</a></li>
+                    <li><a class="waves-effect" href="{{ path('app_logout') }}">Logout</a></li>
+                {% endif %}
+                <li><div class="divider"></div></li>
+                <li {% if app.request.get('_route') == 'app_home' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_home') }}">Home</a></li>
                 <li><div class="divider"></div></li>
                 <li><a class="waves-effect" href="#!">Example #2</a></li>
             </ul>
