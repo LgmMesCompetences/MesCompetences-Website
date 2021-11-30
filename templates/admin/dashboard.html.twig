@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Dashboard{% endblock %}
+
+{% block main_attributes %}class="valign-wrapper"
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+		<div class="row">
+			<div class="col m12 l6 offset-l3 z-depth-3 rounded">
+				<div class="box center-align">
+					<a href="admin/user">Gérer les utilisateurs</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

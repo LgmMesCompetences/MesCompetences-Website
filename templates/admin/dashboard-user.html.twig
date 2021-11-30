@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Dashboard{% endblock %}
+
+{% block main_attributes %}class="valign-wrapper"
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+		<div class="row">
+			<div class="col m12 l12 z-depth-3 rounded">
+				<div class="box center-align">
+					<p>Liste des utilisateurs</p>
+
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th><th>Email</th><th>Date d'inscription</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							{% for u in users %}
+								<tr class="{{ cycle(['table-primary', 'table-secondary'], loop.index0) }}">
+									<td>{{u.id}}</td>
+									<td>{{u.email}}</td>
+									<td>{{u.dateInscription | date('d/m/Y')}}</td>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
