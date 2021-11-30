@@ -110,6 +110,7 @@
     },
     "monolog/monolog": {
         "version": "2.3.5"
+    },
     "lcobucci/clock": {
         "version": "2.1.0"
     },
