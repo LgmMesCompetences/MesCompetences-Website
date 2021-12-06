@@ -6,13 +6,34 @@ use App\Repository\CompetenceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
 
 /**
  * @ORM\Entity(repositoryClass=CompetenceRepository::class)
  */
-#[ApiResource()]
+#[ApiResource(
+    denormalizationContext: [
+        'groups' => ['comp:write']
+    ],
+    normalizationContext: [
+        'groups' => ['comp:read']
+    ],
+    collectionOperations: [
+        "get",
+        "post" => ["security" => "is_granted('ROLE_ADMIN')"],
+    ],
+    itemOperations: [
+        "get",
+        "patch" => ["security" => "is_granted('ROLE_ADMIN')"],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN')"],
+    ],
+)]
+#[ApiFilter(NumericFilter::class, properties: ["level"=> "exact"])]
 class Competence
 {
     /**
@@ -20,19 +41,20 @@ class Competence
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(["comp:read", "poss:read"])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=30)
      */
     #[Assert\NotBlank]
-
+    #[Groups(["com:write", "comp:read", "poss:read"])]
     private $libelle;
-
 
     /**
      * @ORM\ManyToOne(targetEntity=Competence::class, inversedBy="Competence")
      */
+    #[Groups(["com:write", "comp:read", "poss:read"])]
     private $parent;
 
     /**
@@ -44,11 +66,13 @@ class Competence
     /**
      * @ORM\Column(type="integer")
      */
+    #[Groups(["com:write", "comp:read", "poss:read"])]
     private $level;
 
     /**
      * @ORM\ManyToOne(targetEntity=Competence::class)
      */
+    #[Groups(["com:write", "comp:read", "poss:read"])]
     private $mainComp;
 
     /**

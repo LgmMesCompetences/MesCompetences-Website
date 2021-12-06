@@ -13,13 +13,29 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 #[UniqueEntity('email')]
-#[ApiResource()]
+#[ApiResource(
+    denormalizationContext: [
+        'groups' => ['user:write']
+    ],
+    normalizationContext: [
+        'groups' => ['user:read']
+    ],
+    collectionOperations: [
+        "get" => ["security" => "is_granted('ROLE_ADMIN')"],
+        "post" => ["security" => "is_granted('ROLE_ADMIN')"],
+    ],
+    itemOperations: [
+        "get" => ["security" => "is_granted('ROLE_ADMIN') or object == user"],
+        "patch" => ["security" => "is_granted('ROLE_ADMIN') or object == user"],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN')"],
+    ],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
@@ -27,34 +43,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(["user:read"])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
+    #[Groups(["user:read", "user:write"])]
     #[Assert\Email]
     private $email;
 
     /**
      * @ORM\Column(type="json")
      */
+    #[Groups(["user:read", "user:write"])]
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
+    #[Groups(["user:write"])]
+    #[Assert\NotBlank]
     private $password;
 
     /**
      * @ORM\Column(type="datetime")
      */
+    #[Groups(["user:read", "user:write"])]
+    #[Assert\NotNull]
     private $dateInscription;
 
 
     /**
      * @ORM\OneToMany(targetEntity=Posseder::class, mappedBy="user")
      */
+    #[Groups(["user:read", "comp:read"])]
     private $posseders;
 
 
