@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Dashboard Compétences{% endblock %}
+
+{% block main_attributes %}class="valign-wrapper"
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+		<div class="row">
+			<div class="col m12 l12 z-depth-3 rounded">
+				<div class="box center-align">
+					<p>Liste des compétences</p>
+
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th><th>Libellé</th><th>Level</th><th>Parent</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							{% for c in competences %}
+								<tr class="{{ cycle(['table-primary', 'table-secondary'], loop.index0) }}">
+									<td>{{c.id}}</td>
+									<td>{{c.libelle}}</td>
+									<td>{{c.level}}</td>
+									<td>{{c.parent}}</td>
+									<td><a href="{{path('app_admin_competences_modif', {'id':c.id})}}">Modifier</a><td>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
