@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Dashboard User{% endblock %}
+
+{% block main_attributes %}class="valign-wrapper"
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+		<div class="row">
+			<div class="col m12 l12 z-depth-3 rounded">
+				<div class="box center-align">
+					<p>Liste des utilisateurs</p>
+
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th><th>Email</th><th>Date d'inscription</th><th>Rôle</th><th>Interaction</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							{% for u in users %}
+								<tr class="{{ cycle(['table-primary', 'table-secondary'], loop.index0) }}">
+									<td>{{u.id}}</td>
+									<td>{{u.email}}</td>
+									<td>{{u.dateInscription | date('d/m/Y')}}</td>
+									<td>
+										{% for role in u.roles %}
+											{{ role|slice(5)|lower }}{% if not loop.last %},{% endif %}
+										{% endfor %}
+									</td>
+									<td><a href="{{path('app_admin_user_modif', {'id':u.id})}}">Modifier</a><td>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

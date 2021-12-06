@@ -11,8 +11,8 @@ use App\Entity\Competence;
 
 class ProfilController extends AbstractController
 {
-    #[Route('/profil', name: 'profil')]
-    public function profil(Request $request)
+    #[Route('/profile', name: 'profile')]
+    public function profile(Request $request)
     {
         $doctrine = $this->getDoctrine();
         $em = $this->getDoctrine()->getManager();
@@ -20,7 +20,7 @@ class ProfilController extends AbstractController
             $u = $doctrine->getRepository(Competence::class)->find($request->get('id'));
             $em->remove($u);
             $em->flush();
-            return $this->redirectToRoute('profil');
+            return $this->redirectToRoute('profile');
         }
         $repocompetence = $this->getDoctrine()->getRepository(Competence::class);
         $competences = $repocompetence->findBy(array(),array('libelle'=>'ASC'));
@@ -40,7 +40,7 @@ class ProfilController extends AbstractController
                 $em->persist($competence);
                 $em->flush();
 
-                return $this->redirectToRoute('profil ');
+                return $this->redirectToRoute('profile');
                 
             }
         }               

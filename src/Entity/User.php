@@ -8,13 +8,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use ApiPlatform\Core\Annotation\ApiResource;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use ApiPlatform\Core\Annotation\ApiResource;
+
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
+#[UniqueEntity('email')]
 #[ApiResource()]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -157,36 +161,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDateInscription(\DateTimeInterface $dateInscription): self
     {
         $this->dateInscription = $dateInscription;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Competence[]
-     */
-    public function getCompetence(): Collection
-    {
-        return $this->Competence;
-    }
-
-    public function addCompetence(Competence $competence): self
-    {
-        if (!$this->Competence->contains($competence)) {
-            $this->Competence[] = $competence;
-            $competence->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompetence(Competence $competence): self
-    {
-        if ($this->Competence->removeElement($competence)) {
-            // set the owning side to null (unless already changed)
-            if ($competence->getUser() === $this) {
-                $competence->setUser(null);
-            }
-        }
 
         return $this;
     }
