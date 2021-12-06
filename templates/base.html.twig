@@ -9,7 +9,7 @@
         <meta name="description" content="{% block description %}Mes Comptetences{% endblock %}"/>
     {% endblock meta %}
 
-    <title>{% block title %}Mes Comptetences{% endblock title %}</title>
+    <title>{% block title %}Mes Competences{% endblock title %}</title>
 
     {% block stylesheets %}
         <link rel="preload" href="{{ asset('css/materialize.min.css') }}" as="style">
@@ -35,16 +35,17 @@
                     <a href="{{ path('app_home') }}" class="brand-logo">Logo</a>
                     <a href="#" data-target="sidenav" class="right sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
                 </div>
+                
                 {% if nav_extended is defined %}
                 <div class="nav-content">
                     {% block navbar_content %}
                     {% endblock navbar_content %}
                 </div>
                 {% endif %}
+                
             </nav>
         </div>
         {% endblock navbar %}
-
         {% block sidenav %}
         <div>
             <ul id="sidenav" class="sidenav">
@@ -52,7 +53,7 @@
                     <li {% if app.request.get('_route') == 'app_login' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_login') }}">Login</a></li>
                     <li {% if app.request.get('_route') == 'app_register' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_register') }}">Register</a></li>
                 {% else %}
-                    <li {% if app.request.get('_route') == 'app_home' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_home') }}">Home</a></li>
+                    <li {% if app.request.get('_route') == 'profil' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('profil') }}">Profil</a></li>
                     <li><a class="waves-effect" href="{{ path('app_logout') }}">Logout</a></li>
                 {% endif %}
                 <li><div class="divider"></div></li>

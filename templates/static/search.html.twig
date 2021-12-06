@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+{% block title %} {{ parent() }} Résultat de votre recherche {% endblock %}
+{% block contenu %}
+<form action="{{ path('app_search') }}" method="get">
+    <input type="search" name="query" id="query">
+    <button type="submit">seach for other competence</button>
+</form>
+{% endblock %}
+ 

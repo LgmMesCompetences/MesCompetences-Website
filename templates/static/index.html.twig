@@ -3,5 +3,8 @@
 {% block title %}{{ parent() }} - Accueil{% endblock %}
 
 {% block content %}
-
+<form action="{{ path('app_search') }}" method="get">
+    <input type="search" name="query" id="query">
+    <button type="submit">search for competence</button>
+</form>
 {% endblock %}
