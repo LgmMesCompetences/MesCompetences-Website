@@ -7,28 +7,56 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Competence;
-
+use App\Entity\Posseder;
+use Doctrine\Persistence\ManagerRegistry;
 
 class ProfilController extends AbstractController
 {
-    #[Route('/profile', name: 'profile')]
-    public function profile(Request $request)
+    #[Route('/profil', name: 'profil')]
+    public function profil(Request $request, ManagerRegistry $doctrine): Response
     {
-        $doctrine = $this->getDoctrine();
-        $em = $this->getDoctrine()->getManager();
-        if ($request->get('id')!=null){
-            $u = $doctrine->getRepository(Competence::class)->find($request->get('id'));
-            $em->remove($u);
-            $em->flush();
-            return $this->redirectToRoute('profile');
+        $repoPosseder = $this->getDoctrine()->getRepository(Posseder::class);
+        $posseders = $repoPosseder->findBy(['user' => $this->getUser()]);
+        $filteredCompetences = [];
+
+        /** @var \App\Entity\Posseder $posseder */
+        foreach ($posseders as $posseder) {
+            $mainLib = $posseder->getCompetence()->getMainComp() == null ? $posseder->getCompetence()->getLibelle() : $posseder->getCompetence()->getMainComp()->getLibelle();
+            if (!array_key_exists($mainLib, $filteredCompetences)) {
+                $filteredCompetences[$mainLib] = [];
+            }
+
+            array_push($filteredCompetences[$mainLib], $posseder->getCompetence());
         }
-        $repocompetence = $this->getDoctrine()->getRepository(Competence::class);
-        $competences = $repocompetence->findBy(array(),array('libelle'=>'ASC'));
-        return $this->render('profil/profile.html.twig', ['competences'=>$competences]);
+
+        dump($filteredCompetences);
+
+        $sortedCompetences = [];
+        foreach ($filteredCompetences as $key => $group) {
+            uasort($group, function (Competence $a, Competence $b) {
+                if ($a->getLevel() > $b->getLevel()) {
+                    return 1;
+                } elseif ($a->getLevel() < $b->getLevel()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+
+            $sortedCompetences[$key] = $group;
+        }
+
+        dump($sortedCompetences);
+
+        return $this->render('profil/profil.html.twig',
+            [
+                'competences' => $sortedCompetences
+            ]
+        );
     }
 
     #[Route('/modifcompetence/{id}', name: 'modifcompetence',requirements:["id"=>"\d+"])]
-    public function modifCompetence(Request $request, int $id)
+    public function modifCompetence(Request $request, int $id): Response
     {
         $competence=$this->getDoctrine()->getRepository(Competence::class)->find($id);
 
@@ -40,7 +68,7 @@ class ProfilController extends AbstractController
                 $em->persist($competence);
                 $em->flush();
 
-                return $this->redirectToRoute('profile');
+                return $this->redirectToRoute('profil');
                 
             }
         }               

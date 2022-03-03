@@ -1,9 +1,23 @@
 {% extends "base.html.twig" %}
+
 {% block title %} {{ parent() }} Résultat de votre recherche {% endblock %}
-{% block contenu %}
-<form action="{{ path('app_search') }}" method="get">
-    <input type="search" name="query" id="query">
-    <button type="submit">seach for other competence</button>
-</form>
+
+{% block content %}
+<style>
+.search-form {
+  display:flex;
+  flex-direction:row;
+}
+
+.search-input {
+  flex-grow:2;
+}
+</style>
+<div class="container mt-5">
+    <form action="{{ path('app_search') }}" method="get" class="search-form">
+        <input id="query" name="query" type="search" class="search-input browser-default" placeholder="Recherche" title="Recherche" value="{{ app.request.query.get('query') }}" required>
+        <button type="submit" class="btn"><i class="material-icons">search</i></button>
+    </form>
+</div>
 {% endblock %}
  

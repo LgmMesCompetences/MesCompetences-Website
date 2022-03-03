@@ -21,6 +21,7 @@ class ApiAuthenticationSuccessListener
     public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event)
     {
         $data = $event->getData();
+        /** @var \App\Entity\User */
         $user = $event->getUser();
 
         if (!$user instanceof UserInterface) {

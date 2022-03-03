@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}}Profil{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+    <h1>Mes Compétences</h1>
+        {% for group in competences %}
+            <div class="col s12 m3 ml-1 mr-1 mt-1 mb-1" style="border: solid black 1px">
+                {% for comp in group %}
+                    {% if loop.first %}
+                        <p>{{comp.libelle}}</p>
+                        <ul class="browser-default">
+                    {% else %}
+                        <li>{{ comp.libelle }}</li>
+                    {% endif %}
+                    {% if loop.last %}
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

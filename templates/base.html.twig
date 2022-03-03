@@ -30,9 +30,9 @@
     <header>
         {% block navbar %}
         <div class="navbar-fixed">
-            <nav {% if nav_extended is defined %}class="nav-extended"{% endif %}>
+            <nav class="blue{% if nav_extended is defined %} nav-extended{% endif %}">
                 <div class="nav-wrapper">
-                    <a href="{{ path('app_home') }}" class="brand-logo">Logo</a>
+                    <a href="{{ path('app_home') }}" class="brand-logo">MesCompetences.dev</a>
                     <a href="#" data-target="sidenav" class="right sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
                 </div>
                 
@@ -81,7 +81,7 @@
     {% endblock aside %}
 
     {% block footer %}
-    <footer class="page-footer">
+    <footer class="page-footer blue">
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
