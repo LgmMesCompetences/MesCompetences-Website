@@ -13,10 +13,11 @@ use Doctrine\Persistence\ManagerRegistry;
 class ProfilController extends AbstractController
 {
     #[Route('/profil', name: 'profil')]
-    public function profil(Request $request, ManagerRegistry $doctrine): Response
+    public function profil(): Response
     {
-        $repoPosseder = $this->getDoctrine()->getRepository(Posseder::class);
-        $posseders = $repoPosseder->findBy(['user' => $this->getUser()]);
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+        $posseders = $user->getPosseders();
         $filteredCompetences = [];
 
         /** @var \App\Entity\Posseder $posseder */
@@ -28,8 +29,6 @@ class ProfilController extends AbstractController
 
             array_push($filteredCompetences[$mainLib], $posseder->getCompetence());
         }
-
-        dump($filteredCompetences);
 
         $sortedCompetences = [];
         foreach ($filteredCompetences as $key => $group) {
@@ -46,38 +45,10 @@ class ProfilController extends AbstractController
             $sortedCompetences[$key] = $group;
         }
 
-        dump($sortedCompetences);
-
         return $this->render('profil/profil.html.twig',
             [
                 'competences' => $sortedCompetences
             ]
         );
-    }
-
-    #[Route('/modifcompetence/{id}', name: 'modifcompetence',requirements:["id"=>"\d+"])]
-    public function modifCompetence(Request $request, int $id): Response
-    {
-        $competence=$this->getDoctrine()->getRepository(Competence::class)->find($id);
-
-        $form = $this->createForm(AddCompetenceType::class,$competence);
-        if($request->isMethod('POST')){ 
-            $form->handleRequest($request);
-            if ($form->isSubmitted()&&$form->isValid()){
-                $em = $this-> getDoctrine()->getManager();
-                $em->persist($competence);
-                $em->flush();
-
-                return $this->redirectToRoute('profil');
-                
-            }
-        }               
-          return $this->render('profil/modifcompetence.html.twig', ['form'=>$form->createView()]);  
-    }
-
-    #[Route('/ajoutcompetence', name: 'ajoutcompetence')]
-    public function ajoutCompetence(Request $request)
-    {          
-          return $this->render('profil/ajoutcompetence.html.twig', []);  
     }
 }
