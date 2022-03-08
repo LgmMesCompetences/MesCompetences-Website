@@ -11,6 +11,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 use App\Form\RegisterType;
 use App\Entity\User;
+use Doctrine\Persistence\ManagerRegistry;
 
 class SecurityController extends AbstractController
 {
@@ -40,7 +41,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function inscriptionComplete(Request $request, UserPasswordHasherInterface $passwordHasher): Response
+    public function inscriptionComplete(Request $request, UserPasswordHasherInterface $passwordHasher, ManagerRegistry $doctrine): Response
     {
         $user = new User();
         $form = $this->createForm(RegisterType::class,$user);
@@ -51,10 +52,8 @@ class SecurityController extends AbstractController
                 $user->setPassword($passwordHasher->hashPassword($user,$form->get('password')->getData()));
                 $user->setDateInscription(new \DateTime());
 
-                $em = $this->getDoctrine()->getManager();
-
+                $em = $doctrine->getManager();
                 $em->persist($user);
-
                 $em->flush();
 
                 $this->addFlash('Success', 'Your account has been succesfully created.');

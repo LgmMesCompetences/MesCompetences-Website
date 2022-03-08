@@ -58,8 +58,6 @@
                 {% endif %}
                 <li><div class="divider"></div></li>
                 <li {% if app.request.get('_route') == 'app_home' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_home') }}">Home</a></li>
-                <li><div class="divider"></div></li>
-                <li><a class="waves-effect" href="#!">Example #2</a></li>
             </ul>
         </div>
         {% endblock sidenav %}
@@ -91,7 +89,9 @@
                 <div class="col l4 offset-l2 s12">
                     <h5 class="white-text">Links</h5>
                     <ul>
-                        <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                        <li><a class="grey-text text-lighten-3" href="{{ path('app_home') }}">Accueil</a></li>
+                        <li><a class="grey-text text-lighten-3" href="{{ path('app_mentions') }}">Mentions Légales</a></li>
+                        <li><a class="grey-text text-lighten-3" href="{{ path('app_cgu') }}">CGU</a></li>
                     </ul>
                 </div>
             </div>
@@ -105,25 +105,12 @@
     </footer>
     {% endblock footer %}
 
-    {% block flashes %}
-        {% if app.flashes()|length > 0 %}
-            <script>
-                <!-- Toasts -->
-                {% for type, messages in app.flashes() %}
-                    {% for message in messages %}
-                        M.toast({text: "{{ type|upper }}: {{ message }}"});
-                    {% endfor %}
-                {% endfor %}
-            </script>
-        {% endif %}
-    {% endblock flashes %}
-
     {% block javascripts %}
     <script src="{{ asset('js/materialize.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     
     <script>
-    $(document).ready(function(){
+    $(() => {
         var elems = document.querySelectorAll('.sidenav');
         M.Sidenav.init(elems, {
             "edge": "right",
@@ -133,7 +120,15 @@
         {% endif %}
     });
     </script>
-
+        {% block flashes %}
+        <script>
+            {% for type, messages in app.flashes %}
+                {% for message in messages %}
+                    M.toast({text: "{{ type|upper }}: {{ message }}"});
+                {% endfor %}
+            {% endfor %}
+        </script>
+        {% endblock flashes %}
     {% endblock javascripts %}
 </body>
 {% endblock body %}

@@ -7,31 +7,29 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-use App\Form\SearchCompType;
-use App\Entity\Competence;
-
 class StaticController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(Request $request): Response
+    public function home(Request $request): Response
     {
         return $this->render('static/index.html.twig');
     }
 
+    #[Route('/mentions-legales', name: 'app_mentions')]
+    public function mentions(Request $request): Response
+    {
+        return $this->render('static/mentions.html.twig');
+    }
+
+    #[Route('/cgu', name: 'app_cgu')]
+    public function cgu(Request $request): Response
+    {
+        return $this->render('static/cgu.html.twig');
+    }
+
     #[Route('/search', name: 'app_search')]
     public function search(Request $request)
-    {
-        
-        if($request->isMethod('POST')){ 
-            $repo=$this->getDoctrine()->getRepository(Competence::class);
-            $form->handleRequest($request);
-            if ($form->isSubmitted()&&$form->isValid()){
-                return $this->redirectToRoute('search');
-            }
-        }
-           
-        return $this->render('static/search.html.twig');
-   
-          
+    {   
+        return $this->render('static/search.html.twig');       
     }
 }

@@ -56,7 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      */
-    #[Groups(["user:read", "user:write"])]
+    #[Groups(["user:read"])]
     private $roles = [];
 
     /**
@@ -64,21 +64,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     #[Groups(["user:write"])]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(allowNull: true)]
     private $password;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    #[Groups(["user:read", "user:write"])]
-    #[Assert\NotNull]
+    #[Groups(["user:read"])]
     private $dateInscription;
 
 
     /**
      * @ORM\OneToMany(targetEntity=Posseder::class, mappedBy="user")
      */
-    #[Groups(["user:read", "comp:read"])]
+    #[Groups(["user:read"])]
     private $posseders;
 
 
@@ -86,6 +85,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->Competence = new ArrayCollection();
         $this->posseders = new ArrayCollection();
+        $this->dateInscription = new \DateTime();
     }
 
     public function getId(): ?int

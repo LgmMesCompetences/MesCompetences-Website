@@ -44,7 +44,7 @@ class Posseder
     /**
      * @ORM\Column(type="integer")
      */
-    #[Groups(["poss:read"])]
+    #[Groups(["poss:read", "user:read"])]
     #[Assert\NotNull]
     private $nbrRecommander = 0;
 
@@ -52,7 +52,7 @@ class Posseder
      * @ORM\ManyToOne(targetEntity=Competence::class, inversedBy="posseders")
      * @ORM\JoinColumn(nullable=false)
      */
-    #[Groups(["poss:write", "poss:read"])]
+    #[Groups(["poss:write", "poss:read", "user:read"])]
     #[Assert\NotNull]
     private $competence;
 

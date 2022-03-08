@@ -48,13 +48,13 @@ class Competence
      * @ORM\Column(type="string", length=30)
      */
     #[Assert\NotBlank]
-    #[Groups(["com:write", "comp:read", "poss:read"])]
+    #[Groups(["com:write", "comp:read", "poss:read", "user:read"])]
     private $libelle;
 
     /**
      * @ORM\ManyToOne(targetEntity=Competence::class, inversedBy="Competence")
      */
-    #[Groups(["com:write", "comp:read", "poss:read"])]
+    #[Groups(["com:write", "comp:read", "poss:read", "user:read"])]
     private $parent;
 
     /**
@@ -66,13 +66,13 @@ class Competence
     /**
      * @ORM\Column(type="integer")
      */
-    #[Groups(["com:write", "comp:read", "poss:read"])]
+    #[Groups(["com:write", "comp:read", "poss:read", "user:read"])]
     private $level;
 
     /**
      * @ORM\ManyToOne(targetEntity=Competence::class)
      */
-    #[Groups(["com:write", "comp:read", "poss:read"])]
+    #[Groups(["com:write", "comp:read", "poss:read", "user:read"])]
     private $mainComp;
 
     /**

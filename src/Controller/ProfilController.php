@@ -7,13 +7,15 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Competence;
-use App\Entity\Posseder;
+use App\Form\UpdateEmailType;
+use App\Form\UpdatePasswordType;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ProfilController extends AbstractController
 {
     #[Route('/profil', name: 'profil')]
-    public function profil(): Response
+    public function profil(Request $request, UserPasswordHasherInterface $passwordHasher, ManagerRegistry $doctrine): Response
     {
         /** @var \App\Entity\User */
         $user = $this->getUser();
@@ -45,9 +47,35 @@ class ProfilController extends AbstractController
             $sortedCompetences[$key] = $group;
         }
 
+        $passwordForm = $this->createForm(UpdatePasswordType::class);
+        $emailForm = $this->createForm(UpdateEmailType::class);
+
+        if($request->isMethod('POST')){
+            $passwordForm->handleRequest($request);
+            if($passwordForm->isSubmitted() && $passwordForm->isValid()){
+                $newPassword = $passwordHasher->hashPassword($user, $passwordForm->get('newPassword')->getData());
+                $user->setPassword($newPassword);
+                $doctrine->getManager()->flush();
+                $this->addFlash('success', 'Your password have been updated.');
+
+                return $this->redirectToRoute('profil');
+            }
+
+            $emailForm->handleRequest($request);
+            if($emailForm->isSubmitted() && $emailForm->isValid()){
+                $user->setEmail($emailForm->get('email')->getData());
+                $doctrine->getManager()->flush();
+                $this->addFlash('success', 'Your email have been updated.');
+
+                return $this->redirectToRoute('profil');
+            }
+        }
+
         return $this->render('profil/profil.html.twig',
             [
-                'competences' => $sortedCompetences
+                'competences' => $sortedCompetences,
+                'passwordForm' => $passwordForm->createView(),
+                'emailForm' => $emailForm->createView(),
             ]
         );
     }

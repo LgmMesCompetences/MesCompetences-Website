@@ -9,15 +9,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 use App\Entity\User;
 use App\Form\UpdateUserType;
-
+use Doctrine\Persistence\ManagerRegistry;
 
 #[Route('/admin/user')]
 class AdminUserController extends AbstractController
 {
     #[Route('', name: 'app_admin_user_dash')]
-    public function index(): Response
+    public function index(ManagerRegistry $doctrine): Response
     {
-        $doctrine = $this->getDoctrine();
         $users = $doctrine->getRepository(User::class)->findBy(array(), array('id'=>'ASC'));
 
         return $this->render('admin/dashboard-user.html.twig', [
@@ -26,17 +25,14 @@ class AdminUserController extends AbstractController
     }
 
     #[Route('/modif-user/{id}', name: 'app_admin_user_modif',  requirements: ["id"=>"\d+"])]
-    public function modifUtilisateur(Request $request, int $id): Response
+    public function modifUtilisateur(Request $request, User $user, ManagerRegistry $doctrine): Response
     {
-       
-        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
-
         $form = $this->createForm(UpdateUserType::class, $user);
 
         if($request->isMethod('POST')){
             $form->handleRequest($request);
             if($form->isSubmitted() && $form->isValid()){
-                $em = $this->getDoctrine()->getManager();
+                $em = $doctrine->getManager();
                 $em->persist($user);
                 $em->flush();
                 return $this->redirectToRoute('app_admin_user_dash');
