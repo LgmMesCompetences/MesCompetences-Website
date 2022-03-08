@@ -67,19 +67,16 @@
     </div>
 
     <h1>Mes Compétences</h1>
-        {% for group in competences %}
+        {% for main, group in competences %}
             <div class="col s12 m3 ml-1 mr-1 mt-1 mb-1" style="border: solid black 1px">
+                <p>{{main}}</p>
+                <ul class="browser-default">
                 {% for comp in group %}
-                    {% if loop.first %}
-                        <p>{{comp.libelle}}</p>
-                        <ul class="browser-default">
-                    {% else %}
+                    {% if comp.level > 0 %}
                         <li>{{ comp.libelle }}</li>
                     {% endif %}
-                    {% if loop.last %}
-                        </ul>
-                    {% endif %}
                 {% endfor %}
+                </ul>
             </div>
         {% endfor %}
     </div>
