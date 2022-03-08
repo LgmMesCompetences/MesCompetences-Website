@@ -81,3 +81,9 @@ ul.sidenav li.no-hover:hover a i.material-icons {
 .w-100 {
     width: 100%
 }
+
+.removeCompBtn {
+    float: right;
+    height: 1rem;
+    cursor: pointer;
+}

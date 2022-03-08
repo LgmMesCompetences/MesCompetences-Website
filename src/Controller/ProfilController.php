@@ -100,4 +100,22 @@ class ProfilController extends AbstractController
             return $this->json([], Response::HTTP_NOT_MODIFIED);
         }
     }
+
+    #[Route('/profil/removecompetence/{id}', name: 'profil_remove_comp')]
+    public function removeComp(Competence $competence, ManagerRegistry $doctrine): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+        $already = $doctrine->getRepository(Posseder::class)->findBy(['competence'=>$competence->getId(), 'user'=>$user->getId()], [], 1);
+
+        if (!empty($already)) {
+            $doctrine->getManager()->remove($already[0]);
+            $doctrine->getManager()->flush();
+
+            return $this->json([], Response::HTTP_CREATED);
+        }
+        else {
+            return $this->json([], Response::HTTP_NOT_MODIFIED);
+        }
+    }
 }

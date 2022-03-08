@@ -83,7 +83,7 @@
                 <ul class="browser-default">
                 {% for comp in group %}
                     {% if comp.level > 0 %}
-                        <li>{{ comp.libelle }}</li>
+                        <li><span>{{ comp.libelle }}</span><i data-id="{{ comp.id }}" class="removeCompBtn material-icons ">highlight_off</i></li>
                     {% endif %}
                 {% endfor %}
                 </ul>
@@ -141,6 +141,10 @@ $(() => {
             })
         ;
     });
+
+    $('.removeCompBtn').each((_, btn) => {
+        $(btn).click(onRemoveBtnClick);
+    });
 });
 function onAutocomplete(value) {
     console.log(value);
@@ -159,6 +163,13 @@ function onAutocomplete(value) {
             console.error(error);
         })
     ;
+}
+function onRemoveBtnClick() {
+    let id = $(this).data('id');
+    fetch('http://s3-4380.nuage-peda.fr/mescompetences.dev/public/profil/removecompetence/'+id)
+        .then(() => {
+            window.location.reload();
+        });
 }
 </script>
 {% endblock %}
