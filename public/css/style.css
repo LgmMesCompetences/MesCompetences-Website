@@ -77,3 +77,7 @@ ul.sidenav li.no-hover:hover a i.material-icons {
 .va-middle {
     vertical-align: middle;
 }
+
+.w-100 {
+    width: 100%
+}

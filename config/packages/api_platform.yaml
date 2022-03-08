@@ -30,5 +30,6 @@ api_platform:
                 type: header
     
     defaults:
+        pagination_enabled: false
         pagination_items_per_page: 10
         pagination_client_items_per_page: true

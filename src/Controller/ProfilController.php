@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Competence;
+use App\Entity\Posseder;
 use App\Form\UpdateEmailType;
 use App\Form\UpdatePasswordType;
 use Doctrine\Persistence\ManagerRegistry;
@@ -78,5 +79,25 @@ class ProfilController extends AbstractController
                 'emailForm' => $emailForm->createView(),
             ]
         );
+    }
+
+    #[Route('/profil/addcompetence/{id}', name: 'profil_add_comp')]
+    public function addComp(Competence $competence, ManagerRegistry $doctrine): Response
+    {
+        /** @var \App\Entity\User */
+        $user = $this->getUser();
+        $already = $doctrine->getRepository(Posseder::class)->findBy(['competence'=>$competence->getId(), 'user'=>$user->getId()], [], 1);
+
+        if (empty($already)) {
+            $posseder = new Posseder();
+            $posseder->setCompetence($competence);
+            $doctrine->getManager()->persist($posseder);
+            $doctrine->getManager()->flush();
+
+            return $this->json([], Response::HTTP_CREATED);
+        }
+        else {
+            return $this->json([], Response::HTTP_NOT_MODIFIED);
+        }
     }
 }

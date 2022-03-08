@@ -67,6 +67,16 @@
     </div>
 
     <h1>Mes Compétences</h1>
+    <div class="row">
+        <div class="input-field col m12 l10">
+            <input type="text" id="autocomplete-input" class="autocomplete">
+            <label for="autocomplete-input">Ajouter une compétences</label>
+        </div>
+        <div class="col m12 l2">
+            <button class="btn w-100" id="compAdd" disabled><i class="material-icons large">add</i></button>
+        </div>
+        <input type="hidden" id="compId">
+    </div>
         {% for main, group in competences %}
             <div class="col s12 m3 ml-1 mr-1 mt-1 mb-1" style="border: solid black 1px">
                 <p>{{main}}</p>
@@ -95,6 +105,60 @@ $(() => {
     {% if passwordForm.currentPassword.vars.errors is not empty or passwordForm.newPassword.first.vars.errors is not empty %}
         pswdMod.open();
     {% endif %}
+
+    $('#compAdd').click(() => {
+        let id = $('#compId').val();
+        if (id != "") {
+            fetch('http://s3-4380.nuage-peda.fr/mescompetences.dev/public/profil/addcompetence/'+id)
+                .then(() => {
+                    window.location.reload();
+                });
+        }
+    });
+
+    var autoComplete = M.Autocomplete.init($('#autocomplete-input'), {
+      data: {},
+      onAutocomplete: onAutocomplete,
+    })[0];
+    $('#autocomplete-input').on('input', () => {
+        let value = $('#autocomplete-input').val();
+        if (!$('#compAdd').prop('disabled')) {
+            $('#compAdd').prop('disabled', true);
+        }
+        fetch('http://s3-4380.nuage-peda.fr/mescompetences.dev/public/api/competences?libelle='+value)
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                let choices = data['hydra:member'].reduce(function(map, obj) {
+                    map[obj.libelle] = null;
+                    return map;
+                }, {});
+                autoComplete.updateData(choices);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        ;
+    });
 });
+function onAutocomplete(value) {
+    console.log(value);
+    fetch('http://s3-4380.nuage-peda.fr/mescompetences.dev/public/api/competences?libelle='+value)
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            let comp = data['hydra:member'][0];
+            $('#compId').val(comp['id']);
+            $('#compId').data('competence', comp);
+            $('#compAdd').prop('disabled', false);
+        })
+        .catch(error => {
+            $('#compAdd').prop('disabled', true);
+            console.error(error);
+        })
+    ;
+}
 </script>
 {% endblock %}

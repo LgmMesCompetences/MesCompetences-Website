@@ -10,10 +10,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=PossederRepository::class)
  */
+#[UniqueEntity(['user', 'competence'])]
 #[ApiResource(
     denormalizationContext: [
         'groups' => ['poss:write']

@@ -12,6 +12,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ORM\Entity(repositoryClass=CompetenceRepository::class)
@@ -34,6 +35,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\NumericFilter;
     ],
 )]
 #[ApiFilter(NumericFilter::class, properties: ["level"=> "exact"])]
+#[ApiFilter(SearchFilter::class, properties: ["libelle"=> "partial"])]
 class Competence
 {
     /**
