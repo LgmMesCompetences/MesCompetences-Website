@@ -15,9 +15,21 @@
 </style>
 <div class="container mt-5">
     <form action="{{ path('app_search') }}" method="get" class="search-form">
-        <input id="query" name="query" type="search" class="search-input browser-default" placeholder="Recherche" title="Recherche" value="{{ app.request.query.get('query') }}" required>
+        <input id="query" name="query" type="search" class="search-input browser-default" placeholder="Recherche (séparré par une virgule)" title="Recherche" value="{{ app.request.query.get('query') }}" required>
         <button type="submit" class="btn"><i class="material-icons">search</i></button>
     </form>
+    <div class="row">
+      {% for comp in competences %}
+        <div class="col s6 m4 l2">
+          <span class="badge pointer competence {% if comp.libelle in querys %}selected{% endif %}">{{ comp.libelle }}</span>
+        </div>
+      {% endfor %}
+    </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent()}}
+<script src="{{ asset('js/search.js') }}"></script>
 {% endblock %}
  

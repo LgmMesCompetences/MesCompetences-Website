@@ -13,6 +13,7 @@ use App\Form\UpdatePasswordType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[Route('/my')]
 class ProfilController extends AbstractController
 {
     #[Route('/profil', name: 'profil')]

@@ -87,3 +87,11 @@ ul.sidenav li.no-hover:hover a i.material-icons {
     height: 1rem;
     cursor: pointer;
 }
+
+.selected {
+    border: 2px solid #ee6e73;
+}
+
+.pointer {
+    cursor: pointer;
+}
