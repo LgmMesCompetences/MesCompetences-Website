@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{parent()}}Profil{% endblock %}
+{% block title %}{{parent()}} - Profil{% endblock %}
 
 {% block content %}
 <div class="container mt-3">
@@ -88,6 +88,8 @@
                 {% endfor %}
                 </ul>
             </div>
+        {% else %}
+            <p>Vous n'avez encore de compétences</p>
         {% endfor %}
     </div>
 </div>
@@ -109,7 +111,7 @@ $(() => {
     $('#compAdd').click(() => {
         let id = $('#compId').val();
         if (id != "") {
-            fetch('http://s3-4380.nuage-peda.fr/mescompetences.dev/public/profil/addcompetence/'+id)
+            fetch('http://s3-4380.nuage-peda.fr/mescompetences.dev/public/my/profil/addcompetence/'+id)
                 .then(() => {
                     window.location.reload();
                 });
@@ -166,7 +168,7 @@ function onAutocomplete(value) {
 }
 function onRemoveBtnClick() {
     let id = $(this).data('id');
-    fetch('http://s3-4380.nuage-peda.fr/mescompetences.dev/public/profil/removecompetence/'+id)
+    fetch('http://s3-4380.nuage-peda.fr/mescompetences.dev/public/my/profil/removecompetence/'+id)
         .then(() => {
             window.location.reload();
         });

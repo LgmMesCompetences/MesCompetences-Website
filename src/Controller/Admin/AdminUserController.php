@@ -11,10 +11,10 @@ use App\Entity\User;
 use App\Form\UpdateUserType;
 use Doctrine\Persistence\ManagerRegistry;
 
-#[Route('/admin/user')]
+#[Route('/admin/users')]
 class AdminUserController extends AbstractController
 {
-    #[Route('', name: 'app_admin_user_dash')]
+    #[Route('', name: 'app_admin_users')]
     public function index(ManagerRegistry $doctrine): Response
     {
         $users = $doctrine->getRepository(User::class)->findBy(array(), array('id'=>'ASC'));
@@ -24,7 +24,7 @@ class AdminUserController extends AbstractController
         ]);
     }
 
-    #[Route('/modif-user/{id}', name: 'app_admin_user_modif',  requirements: ["id"=>"\d+"])]
+    #[Route('/{id}', name: 'app_admin_user_modif')]
     public function modifUtilisateur(Request $request, User $user, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(UpdateUserType::class, $user);
@@ -32,9 +32,7 @@ class AdminUserController extends AbstractController
         if($request->isMethod('POST')){
             $form->handleRequest($request);
             if($form->isSubmitted() && $form->isValid()){
-                $em = $doctrine->getManager();
-                $em->persist($user);
-                $em->flush();
+                $doctrine->getManager()->flush();
                 return $this->redirectToRoute('app_admin_user_dash');
             }
         }

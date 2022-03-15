@@ -34,6 +34,7 @@ class SearchController extends AbstractController
         return $this->render('static/search.html.twig', [
             'competences' => $competences,
             'querys' => $querys,
+            'results' => [],
         ]);       
     }
 }

@@ -25,6 +25,16 @@
         </div>
       {% endfor %}
     </div>
+    <div>
+      <h5>Resultat de la recherche</h5>
+      {% for item in results %}
+        {% if loop.first %}<ul>{% endif %}
+          <li><a href="{{ path('app_show_profile', {'id': item.id}) }}">Utilisateur #{{ user.id }}</a></li>
+        {% if loop.last %}</ul>{% endif %}
+      {% else %}
+        <p>Aucun résultat trouvé</p>
+      {% endfor %}
+    </div>
 </div>
 {% endblock %}
 

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Competence;
+use App\Form\UpdateCompetenceType;
 use Doctrine\Persistence\ManagerRegistry;
 
 #[Route('/admin/competences')]
@@ -23,20 +24,19 @@ class AdminCompetencesController extends AbstractController
             'competences' => $competences
         ]);
     }
-        #[Route('/modif-competences/{id}', name: 'app_admin_competences_modif',  requirements: ["id"=>"\d+"])]
-        public function modifCompetences(Request $request, Competence $competence, ManagerRegistry $doctrine): Response
-        {    
-            $form = $this->createForm(UpdateCompetenceType::class, $competence);
-    
-            if($request->isMethod('POST')){
-                $form->handleRequest($request);
-                if($form->isSubmitted() && $form->isValid()){
-                    $em = $doctrine->getManager();
-                    $em->persist($competence);
-                    $em->flush();
-                    return $this->redirectToRoute('app_admin_competences_dash');
-                }
+
+    #[Route('/{id}', name: 'app_admin_competences_modif')]
+    public function modifCompetences(Request $request, Competence $competence, ManagerRegistry $doctrine): Response
+    {    
+        $form = $this->createForm(UpdateCompetenceType::class, $competence);
+
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if($form->isSubmitted() && $form->isValid()){
+                $doctrine->getManager()->flush();
+                return $this->redirectToRoute('app_admin_competences_dash');
             }
-            return $this->render('admin/modif-competences.html.twig', ['form'=>$form->createView()]);
         }
+        return $this->render('admin/modif-competences.html.twig', ['form'=>$form->createView()]);
+    }
 }

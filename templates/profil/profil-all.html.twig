@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Profil de #{{ user.id }}{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+    <h1>Compétences de l'utilisateur #{{ user.id }}</h1>
+    <div class="row">
+    {% for main, group in competences %}
+        <div class="col s12 m3 ml-1 mr-1 mt-1 mb-1" style="border: solid black 1px">
+            <p>{{main}}</p>
+            <ul class="browser-default">
+            {% for comp in group %}
+                {% if comp.level > 0 %}
+                    <li><span>{{ comp.libelle }}</span></li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <p>L'utilisateur n'a pas de compétences</p>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
