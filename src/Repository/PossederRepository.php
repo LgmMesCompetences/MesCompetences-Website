@@ -19,9 +19,26 @@ class PossederRepository extends ServiceEntityRepository
         parent::__construct($registry, Posseder::class);
     }
 
-    // /**
-    //  * @return Posseder[] Returns an array of Posseder objects
-    //  */
+     /**
+      * @return Posseder[] Returns an array of Posseder objects
+      */
+
+
+      /*public function posseders($value){
+          return $this->createQueryBuilder('p')
+          ->select('DISTINCT(user_id)')
+          ->where("mcd_in_array((")
+          ->select("CONCAT('[', GROUP_CONCAT('\"',C.libelle, '\"'),']')")
+          ->from("posseder")  
+          JOIN competence C ON posseder.competence_id = C.id 
+          WHERE posseder.user_id = P.user_id), ':param')
+        )=1  
+
+          ->setParameter('param', $value)
+          ->getQuery()
+          ->getResult()
+          ;
+      }*/
     /*
     public function findByExampleField($value)
     {

@@ -17,5 +17,6 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
         dql:
-            json_fonctions:
+            string_functions:
                 mcd_in_array: App\DQL\McdInArray
+                group_concat: App\DQL\GroupConcat        
