@@ -50,14 +50,14 @@
         <div>
             <ul id="sidenav" class="sidenav">
                 {% if not app.user %}
-                    <li {% if app.request.get('_route') == 'app_login' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_login') }}">Login</a></li>
-                    <li {% if app.request.get('_route') == 'app_register' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_register') }}">Register</a></li>
+                    <li {% if app.request.get('_route') == 'app_login' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_login') }}">Connexion</a></li>
+                    <li {% if app.request.get('_route') == 'app_register' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_register') }}">Inscription</a></li>
                 {% else %}
                     <li {% if app.request.get('_route') == 'profil' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('profil') }}">Profil</a></li>
                     <li><a class="waves-effect" href="{{ path('app_logout') }}">Logout</a></li>
                 {% endif %}
                 <li><div class="divider"></div></li>
-                <li {% if app.request.get('_route') == 'app_home' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_home') }}">Home</a></li>
+                <li {% if app.request.get('_route') == 'app_home' %}class="active"{% endif %}><a class="waves-effect" href="{{ path('app_home') }}">Accueil</a></li>
             </ul>
         </div>
         {% endblock sidenav %}
@@ -90,8 +90,9 @@
                     <h5 class="white-text">Liens utiles</h5>
                     <ul>
                         <li><a class="grey-text text-lighten-3" href="{{ path('app_home') }}">Accueil</a></li>
-                        <li><a class="grey-text text-lighten-3" href="{{ path('app_mentions') }}">Mentions Légales</a></li>
                         <li><a class="grey-text text-lighten-3" href="{{ path('app_cgu') }}">CGU</a></li>
+                        <li><a class="grey-text text-lighten-3" href="{{ path('app_mentions') }}">Mentions Légales</a></li>
+                        <li><a class="grey-text text-lighten-3" href="{{ path('app_politique') }}">Politique de Confidentialité</a></li>
                     </ul>
                 </div>
             </div>

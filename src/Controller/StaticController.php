@@ -18,18 +18,18 @@ class StaticController extends AbstractController
     #[Route('/mentions-legales', name: 'app_mentions')]
     public function mentions(Request $request): Response
     {
-        return $this->render('static/mentions.html.twig');
+        return $this->render('static/mentions-legales.html.twig');
     }
 
-    #[Route('/cgu', name: 'app_cgu')]
+    #[Route('/conditions-generales-d-utilisation', name: 'app_cgu')]
     public function cgu(Request $request): Response
     {
         return $this->render('static/cgu.html.twig');
     }
 
-    #[Route('/search', name: 'app_search')]
-    public function search(Request $request)
-    {   
-        return $this->render('static/search.html.twig');       
+    #[Route('/politique-de-confidantialite', name: 'app_politique')]
+    public function politique(Request $request): Response
+    {
+        return $this->render('static/politique.html.twig');
     }
 }
