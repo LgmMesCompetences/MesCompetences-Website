@@ -5,16 +5,8 @@ namespace App\EventListener;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-use Symfony\Component\Serializer\Serializer;
-
 class ApiAuthenticationSuccessListener
 {
-    private $serializer;
-
-    public function __construct(Serializer $serializer) {
-        $this->serializer = $serializer;
-    }
-
     /**
      * @param AuthenticationSuccessEvent $event
      */
@@ -28,7 +20,8 @@ class ApiAuthenticationSuccessListener
             return;
         }
 
-        $data['user'] = $this->serializer->normalize($user->getId(), null);
+        $data['user']['id'] = $user->getId();
+        $data['user']['email'] = $user->getEmail();
 
         $event->setData($data);
     }
