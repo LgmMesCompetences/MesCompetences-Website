@@ -16,3 +16,6 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+        dql:
+            json_fonctions:
+                mcd_in_array: App\DQL\McdInArray
