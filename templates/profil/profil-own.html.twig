@@ -7,7 +7,7 @@
     <div class="row">
     <h1>Mes infos</h1>
     <div id="userEmail">
-        <span>Addresse email: </span>
+        <span>Adresse email: </span>
         <span>{{ app.user.email }}</span>
         <br>
         <a class="modal-trigger" href="#updateEmailModal">Modifier mon email</a>
@@ -49,7 +49,7 @@
     <div id="updateEmailModal" class="modal">
         {{ form_start(emailForm) }}
         <div class="modal-content">
-            <h4>Modification de l'addresse email</h4>
+            <h4>Modification de l'adresse email</h4>
             <div class="input-field">
                 {{ form_widget(emailForm.email) }}
                 {{ form_label(emailForm.email) }}
@@ -70,7 +70,7 @@
     <div class="row">
         <div class="input-field col m12 l10">
             <input type="text" id="autocomplete-input" class="autocomplete">
-            <label for="autocomplete-input">Ajouter une compétences</label>
+            <label for="autocomplete-input">Ajouter une compétence</label>
         </div>
         <div class="col m12 l2">
             <button class="btn w-100" id="compAdd" disabled><i class="material-icons large">add</i></button>
@@ -89,7 +89,7 @@
                 </ul>
             </div>
         {% else %}
-            <p>Vous n'avez encore de compétences</p>
+            <p>Vous n'avez encore de compétence</p>
         {% endfor %}
     </div>
 </div>

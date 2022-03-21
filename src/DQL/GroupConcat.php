@@ -41,6 +41,7 @@ class GroupConcat extends FunctionNode
             $parser->match(Lexer::T_DISTINCT);
             $this->isDistinct = true;
         }
+<<<<<<< HEAD
         // first Path Expression is mandatory
         // $this->pathExp = array();
         $this->pathExp[] = $parser->StringExpression();
@@ -58,6 +59,10 @@ class GroupConcat extends FunctionNode
             $parser->match(Lexer::T_IDENTIFIER);
             $this->separator = $parser->StringPrimary();
         }
+=======
+
+        $this->expression = $parser->SingleValuedPathExpression();
+>>>>>>> 1d76d68a7837007f035afd796083c18f122d3e77
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
 }
