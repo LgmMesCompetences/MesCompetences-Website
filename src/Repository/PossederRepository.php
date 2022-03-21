@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Posseder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Func;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,4 +49,60 @@ class PossederRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function searchUsersByCompetences_doctrine(String $competences)
+    {
+        $expr = $this->getEntityManager()->getExpressionBuilder();
+        return $this->createQueryBuilder('p')
+            ->select('DISTINCT p.user')
+            ->where($expr->eq(
+                'mcd_in_array(('.
+                $this->createQueryBuilder('pos')
+                    ->select("CONCAT('[',GROUP_CONCAT('\"',C.libelle,'\"'),']')")
+                    ->join('pos.competence', 'C')
+                    ->where($expr->eq('pos.user', 'p.user'))
+                ->getDQL().
+                '),'.
+                '\':competences\''.
+                ')',1)
+            )
+            ->setParameter('competences', $competences)
+            ->getQuery()
+            ->getSQL()
+        ;
+    }
+
+    public function testInArray(String $competences)
+    {
+        $expr = $this->getEntityManager()->getExpressionBuilder();
+        return $this->createQueryBuilder('p')
+            ->select("mcd_in_array('[\"MainComp\", \"SubComp\"]',':competences')")
+            ->setParameter('competences', $competences)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function testConcat(String $competences)
+    {
+        $expr = $this->getEntityManager()->getExpressionBuilder();
+        return $this->createQueryBuilder('p')
+            ->select("CONCAT('[',GROUP_CONCAT('\"',C.libelle, '\"'),']')")
+            ->join('p.competence', 'C')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function searchUsersByCompetences_native(String $competences)
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult('App\Entity\User', 'u');
+        $rsm->addFieldResult('u', 'user_id', 'id');
+
+        $query = $this->getEntityManager()->createNativeQuery("SELECT DISTINCT p.user_id FROM posseder p WHERE mcd_in_array((SELECT CONCAT('[',GROUP_CONCAT('\"',C.libelle,'\"'),']') FROM posseder pos JOIN competence C ON pos.competence_id = C.id WHERE pos.user_id = p.user_id), :comp) = 1", $rsm);
+        $query->setParameter(':comp', $competences);
+
+        return $query->getResult();
+    }
 }

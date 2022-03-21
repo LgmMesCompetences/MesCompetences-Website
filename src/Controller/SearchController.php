@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Competence;
+use App\Entity\Posseder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,19 +23,26 @@ class SearchController extends AbstractController
 
         if ($query) {
             $querys = explode(',', $query);
-            dump($querys);
 
             $querys = array_map(function ($value) {return trim($value);}, $querys);
             dump($querys);
+
+            /** @var \App\Repository\PossederRepository */
+            $repo = $doctrine->getRepository(Posseder::class);
+
+            $results = $repo->searchUsersByCompetences_native(json_encode($querys));
+
+            dump($results);
         }
         else {
             $querys = [];
+            $results = [];
         }
 
         return $this->render('static/search.html.twig', [
             'competences' => $competences,
             'querys' => $querys,
-            'results' => [],
+            'results' => $results,
         ]);       
     }
 }
