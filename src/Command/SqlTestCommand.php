@@ -12,10 +12,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-use Doctrine\Persistence\ManagerRegistry;
-use App\Entity\Posseder;
-
-
 #[AsCommand(
     name: 'app:sql:test',
     description: 'Add a short description for your command',
